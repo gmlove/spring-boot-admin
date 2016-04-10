@@ -22,6 +22,7 @@ require('jquery');
 var angular = require('angular');
 require('angular-resource');
 require('angular-route');
+require('angular-local-storage');
 require('angular-ui-router');
 require('angular-ui-bootstrap');
 require('angular-ui-bootstrap-tpls');
@@ -31,7 +32,8 @@ var springBootAdmin = angular.module('springBootAdmin', [
     'ngResource',
     'ngRoute',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'LocalStorageModule'
 ]);
 
 require('./controller');
@@ -39,7 +41,9 @@ require('./service');
 require('./filter');
 require('./directive');
 
-springBootAdmin.config(function ($stateProvider, $urlRouterProvider) {
+springBootAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix("spring-boot-admin");
+
     $urlRouterProvider
         .when('/', '/overview')
         .otherwise('/');

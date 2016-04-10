@@ -10,3 +10,4 @@ springBootAdmin.service('Abbreviator', require('./abbreviator'));
 springBootAdmin.service('jolokia', require('./jolokia'));
 springBootAdmin.service('MetricsHelper', require('./metricsHelper'));
 springBootAdmin.service('Notification', require('./notification'));
+springBootAdmin.service('dataStorage', require('./dataStorage'));
