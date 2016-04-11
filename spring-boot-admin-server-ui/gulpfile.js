@@ -8,7 +8,7 @@ var browserify = require('browserify'),
     gulp = require('gulp'),
     karma = require('gulp-karma'),
     mocha = require('gulp-mocha'),
-    ngAnnotage = require('gulp-ng-annotate'),
+    ngAnnotate = require('gulp-ng-annotate'),
     protractor = require('gulp-protractor').protractor,
     source = require('vinyl-source-stream'),
     streamify = require('gulp-streamify'),
@@ -109,7 +109,7 @@ gulp.task('ngAnnotate', ['lint', 'unit'], function () {
             'app/js/**/*.js',
             '!app/js/third-party/**'
         ])
-        .pipe(ngAnnotage())
+        .pipe(ngAnnotate())
         .pipe(gulp.dest(target('/ngAnnotate')));
 });
 
