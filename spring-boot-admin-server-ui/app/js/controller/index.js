@@ -15,3 +15,4 @@ springBootAdmin.controller('jmxCtrl', require('./apps/jmxCtrl'));
 springBootAdmin.controller('threadsCtrl', require('./apps/threadsCtrl'));
 springBootAdmin.controller('traceCtrl', require('./apps/traceCtrl'));
 springBootAdmin.controller('journalCtrl', require('./journalCtrl'));
+springBootAdmin.controller('AppModalCtrl', require('./appModalCtrl'));

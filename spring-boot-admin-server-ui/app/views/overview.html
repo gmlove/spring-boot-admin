@@ -10,7 +10,7 @@
 		<col>
 		<col>
 		<col>
-		<col style="width: 250px;">
+		<col style="width: 266px;">
 		<thead>
 			<tr>
 				<th><span class="sortable" ng-class="orderByCssClass('name')" ng-click="orderBy('name')">Application</span>
@@ -19,7 +19,12 @@
 				</th>
 				<th><span class="sortable" ng-class="orderByCssClass('info.version')" ng-click="orderBy('info.version')">Version</span></th>
 				<th>Info</th>
-				<th colspan="2">Status</th>
+				<th>Status</th>
+				<th>
+					<div class="btn-group pull-right" title="add">
+						<a class="btn btn-success" ng-click="add()"><i class="icon-plus icon-white"></i></a>
+					</div>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,7 +39,7 @@
 				<td>
 					<div class="pull-right">
 						<div class="btn-group" ng-hide="application.managementUrl == null || application.statusInfo.status == null || application.statusInfo.status == 'OFFLINE'">
-							<a ng-if="application.capabilities.logfile" target="_self" class="btn btn-success" ng-href="{{application.capabilities.logfile ? 'api/applications/' + application.id + '/logfile' :''}}"><i class="icon-file icon-white"></i>Log</a>
+							<a ng-if="application.capabilities.logfile" target="_self" class="btn btn-success" ng-href="{{application.capabilities.logfile ? application.logfileUrl :''}}"><i class="icon-file icon-white"></i>Log</a>
 							<a ui-sref="apps.details.metrics({id: application.id})" class="btn btn-success">Details</a>
 							<a class="btn btn-success dropdown-toggle" data-toggle="dropdown">
 								<span class="caret"></span>
@@ -48,7 +53,8 @@
 								<li ng-show="application.capabilities.activiti"><a ui-sref="apps.activiti({id: application.id})" >Activiti</a></li>
 							</ul>
 						</div>
-						<div class="btn-group" title="remove">
+						<div class="btn-group" title="operation">
+							<a class="btn btn-success" ng-click="edit(application)"><i class="icon-pencil icon-white"></i></a>
 							<a class="btn btn-danger" ng-click="remove(application)"><i class="icon-remove icon-white"></i></a>
 						</div>
 					</div>
