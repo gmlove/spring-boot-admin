@@ -15,5 +15,18 @@
  */
 'use strict';
 
-module.exports = function ($scope) {
+module.exports = function ($scope, $rootScope, $modal, Application) {
+    $scope.app = {
+        id: '',
+        name: '',
+        url: ''
+    };
+    
+    $scope.onSubmit = function(id, name, url) {
+        var app = new Application(id, name, url);
+        Application.add(app);
+        Application.query(function() {
+            $rootScope.modalInstance.close();
+        });
+    }
 };

@@ -17,7 +17,7 @@
 
 var _ = require('lodash');
 
-module.exports = function ($scope, $location, $interval, $state, $filter, $modal, Application, Notification) {
+module.exports = function ($scope, $rootScope, $location, $interval, $state, $filter, $modal, Application, Notification) {
     var createNote = function(app) {
         var title = app.name + (app.statusInfo.status === 'UP' ? ' is back ' : ' went ') + app.statusInfo.status;
         var options = { tag: app.id,
@@ -77,7 +77,7 @@ module.exports = function ($scope, $location, $interval, $state, $filter, $modal
     };
 
     $scope.add = function () {
-        var modalInstance = $modal.open({
+        $rootScope.modalInstance = $modal.open({
             templateUrl: 'views/app.html',
             controller: 'AppModalCtrl',
             size: 'lg'
