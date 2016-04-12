@@ -7,10 +7,10 @@
             width: 98%;
         }
     </style>
-    <form id="new-app-form" ng-submit="onSubmit(app.id, app.name, app.url)">
+    <form id="new-app-form" ng-submit="onSubmit(app.url, app.name, app.id)">
         <div class="form-group">
             <label>URL</label>
-            <input type="url" class="form-control" ng-model="app.url">
+            <input type="text" class="form-control" ng-model="app.url">
         </div>
         <div class="form-group">
             <label>Name</label>

@@ -28,7 +28,7 @@ module.exports = function ($scope, $rootScope, $location, $interval, $state, $fi
         Notification.notify(title, options);
     };
 
-    var refresh = function(app) {
+    $rootScope.refresh = function(app) {
         app.info = {};
         app.needRefresh = true;
         //find application in known applications and copy state --> less flickering
@@ -70,7 +70,7 @@ module.exports = function ($scope, $rootScope, $location, $interval, $state, $fi
     $scope.loadData = function () {
         Application.query(function (applications) {
             for (var i = 0; i < applications.length; i++) {
-                refresh(applications[i]);
+                $rootScope.refresh(applications[i]);
             }
             $scope.applications = applications;
         });

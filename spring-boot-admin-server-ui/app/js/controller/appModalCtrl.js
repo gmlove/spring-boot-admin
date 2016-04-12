@@ -22,11 +22,11 @@ module.exports = function ($scope, $rootScope, $modal, Application) {
         url: ''
     };
     
-    $scope.onSubmit = function(id, name, url) {
-        var app = new Application(id, name, url);
+    $scope.onSubmit = function(url, name, id) {
+        console.log(url, name, id);
+        var app = new Application(url, name, id);
         Application.add(app);
-        Application.query(function() {
-            $rootScope.modalInstance.close();
-        });
+        $rootScope.refresh(app);
+        $rootScope.modalInstance.close();
     }
 };
