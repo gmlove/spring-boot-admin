@@ -17,14 +17,11 @@
 
 module.exports = function ($scope, $rootScope, $modal, Application) {
     $scope.app = {
-        id: '',
-        name: '',
-        url: ''
+        opts: {}
     };
     
-    $scope.onSubmit = function(url, name, id) {
-        console.log(url, name, id);
-        var app = new Application(url, name, id);
+    $scope.onSubmit = function(url, name, id, opts) {
+        var app = new Application(url, name, id, opts);
         Application.add(app);
         $rootScope.refresh(app);
         $rootScope.modalInstance.close();

@@ -1,25 +1,71 @@
-<div style="margin: 30px 50px 50px 50px">
-    <div class="page-header">
-        <h2>Create a new application</h2>
+<div style="height: 500px; overflow-y: scroll">
+    <div style="margin: 30px 50px 50px 50px">
+        <div class="page-header">
+            <h2>Create a new application</h2>
+        </div>
+        <style>
+            #new-app-form input {
+                width: 98%;
+            }
+        </style>
+        <form id="new-app-form" ng-submit="onSubmit(app.url, app.name, app.id, app.opts)">
+            <div class="form-group">
+                <label>URL *</label>
+                <input type="text" class="form-control" ng-model="app.url">
+            </div>
+            <div class="form-group">
+                <label>Name *</label>
+                <input type="text" class="form-control" ng-model="app.name">
+            </div>
+            <div class="form-group">
+                <label>ID *</label>
+                <input type="text" class="form-control" ng-model="app.id">
+            </div>
+            <div class="form-group">
+                <label>Health URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.health">
+            </div>
+            <div class="form-group">
+                <label>Configprops URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.configprops">
+            </div>
+            <div class="form-group">
+                <label>Info URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.info">
+            </div>
+            <div class="form-group">
+                <label>Metrics URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.metrics">
+            </div>
+            <div class="form-group">
+                <label>Env URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.env">
+            </div>
+            <div class="form-group">
+                <label>Env/reset URL</label>
+                <input type="text" class="form-control" ng-model="app.opts['env/reset']">
+            </div>
+            <div class="form-group">
+                <label>Refresh URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.refresh">
+            </div>
+            <div class="form-group">
+                <label>Dump URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.dump">
+            </div>
+            <div class="form-group">
+                <label>Trace URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.trace">
+            </div>
+            <div class="form-group">
+                <label>Activity URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.activiti">
+            </div>
+            <div class="form-group">
+                <label>Logfile URL</label>
+                <input type="text" class="form-control" ng-model="app.opts.logfile">
+            </div>
+            <button class="btn btn-default">Submit</button>
+        </form>
     </div>
-    <style>
-        #new-app-form input {
-            width: 98%;
-        }
-    </style>
-    <form id="new-app-form" ng-submit="onSubmit(app.url, app.name, app.id)">
-        <div class="form-group">
-            <label>URL</label>
-            <input type="text" class="form-control" ng-model="app.url">
-        </div>
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" ng-model="app.name">
-        </div>
-        <div class="form-group">
-            <label>ID</label>
-            <input type="text" class="form-control" ng-model="app.id">
-        </div>
-        <button class="btn btn-default">Submit</button>
-    </form>
 </div>
