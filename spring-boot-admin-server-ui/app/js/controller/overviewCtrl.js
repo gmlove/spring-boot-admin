@@ -41,7 +41,7 @@ module.exports = function ($scope, $rootScope, $location, $interval, $state, $fi
                 if (app.statusInfo.status !== $scope.applications[j].statusInfo.status) {
                     createNote(app); //issue notifiaction on state change
                 } else {
-                  app.needRefresh = false; //if state hasn't change don't fetch info
+                  // app.needRefresh = false; //if state hasn't change don't fetch info
                 }
                 break;
             }
