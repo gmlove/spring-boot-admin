@@ -15,9 +15,36 @@
  */
 'use strict';
 
+var _ = require('lodash');
+
 module.exports = function ($scope, $rootScope, $modal, Application) {
     $scope.app = {
+        id: '',
+        name: '',
+        url: '',
         opts: {}
+    };
+    
+    $scope.showMoreConfig = false;
+    
+    $scope.onUrlChange = function(url, opts) {
+        opts.managementUrl = opts.managementUrl || url;
+        opts.healthUrl = opts.healthUrl || url + '/health';
+        opts.serviceUrl = opts.serviceUrl || url;
+
+        var endpoints = ['health', 'configprops', 'info', 'metrics', 'env', 'env/reset', 'refresh', 'dump', 'trace', 'activiti', 'logfile'];
+        _.map(endpoints, function (endpoint) {
+            var key = endpoint.replace(/\/\w/, function(s){return s.substr(1).toUpperCase();});
+            console.log(key);
+            opts[key + 'Url'] = url + '/' + endpoint;
+        });
+        console.log(opts);
+    };
+
+    $scope.toggle = function(event) {
+        event.preventDefault();
+        
+        $scope.showMoreConfig = !$scope.showMoreConfig;
     };
     
     $scope.onSubmit = function(url, name, id, opts) {
