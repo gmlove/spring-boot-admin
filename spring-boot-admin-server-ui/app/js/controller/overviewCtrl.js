@@ -79,7 +79,6 @@ module.exports = function ($scope, $rootScope, $location, $interval, $state, $fi
     $scope.add = function () {
         $rootScope.modalInstance = $modal.open({
             templateUrl: 'views/app.html',
-            controller: 'AppModalCtrl',
             size: 'lg'
         });
     };

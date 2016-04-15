@@ -1,4 +1,4 @@
-'use strict';
+import { AppEditorCtrl } from './appModalCtrl'
 
 var angular = require('angular');
 var springBootAdmin = angular.module('springBootAdmin');
@@ -15,4 +15,8 @@ springBootAdmin.controller('jmxCtrl', require('./apps/jmxCtrl'));
 springBootAdmin.controller('threadsCtrl', require('./apps/threadsCtrl'));
 springBootAdmin.controller('traceCtrl', require('./apps/traceCtrl'));
 springBootAdmin.controller('journalCtrl', require('./journalCtrl'));
-springBootAdmin.controller('AppModalCtrl', require('./appModalCtrl'));
+springBootAdmin.component('appEditor', {
+    controller: AppEditorCtrl,
+    controllerAs: 'modal',
+    templateUrl: '/views/app.component.html'
+});

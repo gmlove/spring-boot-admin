@@ -13,23 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
+import * as _ from 'lodash';
 
-var _ = require('lodash');
+export class AppEditorCtrl {
+    constructor($rootScope, Application) {
+        this.$rootScope = $rootScope;
+        this.Application = Application;
+    }
 
-module.exports = function ($scope, $rootScope, $modal, Application) {
-    $scope.app = {
-        id: '',
-        name: '',
-        url: '',
-        opts: {}
-    };
-    
-    $rootScope.noScroll = true;
-    $scope.showMoreConfig = false;
-    $scope.maxHeight = angular.element(window).height() - 100;
-    
-    $scope.onUrlChange = function(url, opts) {
+    $onInit() {
+        this.app = {
+            id: '',
+            name: '',
+            url: '',
+            opts: {}
+        };
+
+        this.$rootScope.noScroll = true;
+        
+        this.showMoreConfig = false;
+        this.maxHeight = angular.element(window).height() - 100;
+    }
+
+    $onDestroy() {
+        this.$rootScope.noScroll = false;
+    }
+
+    onUrlChange({url, opts}) {
         opts.managementUrl = opts.managementUrl || url;
         opts.healthUrl = opts.healthUrl || url + '/health';
         opts.serviceUrl = opts.serviceUrl || url;
@@ -39,22 +49,18 @@ module.exports = function ($scope, $rootScope, $modal, Application) {
             var key = endpoint.replace(/\/\w/, function(s){return s.substr(1).toUpperCase();});
             opts[key + 'Url'] = url + '/' + endpoint;
         });
-    };
+    }
 
-    $scope.toggle = function(event) {
+    toggle(event) {
         event.preventDefault();
-        
-        $scope.showMoreConfig = !$scope.showMoreConfig;
-    };
-    
-    $scope.onSubmit = function(url, name, id, opts) {
-        var app = new Application(url, name, id, opts);
-        Application.add(app);
-        $rootScope.refresh(app);
-        $rootScope.modalInstance.close();
-    };
-    
-    $scope.$on('$destroy', function () {
-        $rootScope.noScroll = false;
-    });
-};
+
+        this.showMoreConfig = !this.showMoreConfig;
+    }
+
+    onSubmit({url, name, id, opts}) {
+        var app = new this.Application(url, name, id, opts);
+        this.Application.add(app);
+        this.$rootScope.refresh(app);
+        this.$rootScope.modalInstance.close();
+    }
+}
