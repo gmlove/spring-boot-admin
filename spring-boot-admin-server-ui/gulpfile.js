@@ -96,9 +96,9 @@ gulp.task('unit', skipTests(function () {
 }));
 
 gulp.task('babel', function () {
-    return gulp.src(['./app/js/**/*.js', '!./app/js/third-party/**/*.js'])
+    return gulp.src(['./app/**/*.js', '!./app/js/third-party/**/*.js'])
         .pipe(babel({
-            presets: ['es2015']
+            presets: ['es2015', 'stage-1', 'stage-2', 'stage-3']
         }))
         .pipe(gulp.dest(target('/dist/src')));
 });
@@ -109,7 +109,7 @@ gulp.task('browserify', ['lint', 'unit', 'babel'], function () {
             debug: true
         })
         .pipe(source('app.js'))
-        .pipe(gulp.dest(target('/dist/js')))
+        .pipe(gulp.dest(target('/dist')))
         .pipe(connect.reload());
 });
 

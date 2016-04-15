@@ -1,47 +1,12 @@
-/*
- * Copyright 2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-'use strict';
+import * as angular from 'angular';
 
-require('es5-shim');
-require('es5-sham');
-
-require('jquery');
-var angular = require('angular');
-require('angular-resource');
-require('angular-route');
-require('angular-local-storage');
-require('angular-ui-router');
-require('angular-ui-bootstrap');
-require('angular-ui-bootstrap-tpls');
-require('jolokia');
-
-var springBootAdmin = angular.module('springBootAdmin', [
+angular.module('springBootAdmin', [
     'ngResource',
     'ngRoute',
     'ui.router',
     'ui.bootstrap',
     'LocalStorageModule'
-]);
-
-require('./controller');
-require('./service');
-require('./filter');
-require('./directive');
-
-springBootAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
+]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix("spring-boot-admin");
 
     $urlRouterProvider
@@ -66,8 +31,8 @@ springBootAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvid
             resolve: {
                 application: function ($stateParams, Application) {
                     return Application.get({
-                            id: $stateParams.id
-                        })
+                        id: $stateParams.id
+                    })
                         .$promise;
                 }
             }
@@ -117,12 +82,11 @@ springBootAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvid
             templateUrl: 'views/apps/trace.html',
             controller: 'traceCtrl'
         })
-       .state('journal', {
+        .state('journal', {
             url: '/journal',
             templateUrl: 'views/journal.html',
             controller: 'journalCtrl'
         });
-});
-springBootAdmin.run(function ($rootScope, $state) {
+}).run(function ($rootScope, $state) {
     $rootScope.$state = $state;
 });

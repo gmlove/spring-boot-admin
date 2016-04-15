@@ -7,6 +7,7 @@
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +16,7 @@
  */
 import * as _ from 'lodash';
 
-export class AppEditorCtrl {
+class AppEditorController {
     constructor($rootScope, Application) {
         this.$rootScope = $rootScope;
         this.Application = Application;
@@ -29,14 +30,14 @@ export class AppEditorCtrl {
             opts: {}
         };
 
-        this.$rootScope.noScroll = true;
+        this.onBodyFrozen(true);
         
         this.showMoreConfig = false;
         this.maxHeight = angular.element(window).height() - 100;
     }
 
     $onDestroy() {
-        this.$rootScope.noScroll = false;
+        this.onBodyFrozen(false);
     }
 
     onUrlChange({url, opts}) {
@@ -63,4 +64,10 @@ export class AppEditorCtrl {
         this.$rootScope.refresh(app);
         this.$rootScope.modalInstance.close();
     }
+}
+
+export default {
+    controller: AppEditorController,
+    controllerAs: 'editor',
+    templateUrl: '/components/app_editor/app_editor.component.html'
 }
