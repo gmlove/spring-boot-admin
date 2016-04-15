@@ -30,14 +30,14 @@ class AppEditorController {
             opts: {}
         };
 
-        this.onBodyFrozen(true);
+        this.$rootScope.$broadcast('frozen', true);
         
         this.showMoreConfig = false;
         this.maxHeight = angular.element(window).height() - 100;
     }
 
     $onDestroy() {
-        this.onBodyFrozen(false);
+        this.$rootScope.$broadcast('frozen', false);
     }
 
     onUrlChange({url, opts}) {
