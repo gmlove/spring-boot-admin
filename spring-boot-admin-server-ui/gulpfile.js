@@ -14,6 +14,7 @@ var browserify = require('browserify'),
     streamify = require('gulp-streamify'),
     uglify = require('gulp-uglify'),
     shell = require('gulp-shell'),
+    babel = require('gulp-babel'),
     argv = require('yargs').argv;
 
 var backendPort = 8080,
@@ -94,8 +95,16 @@ gulp.task('unit', skipTests(function () {
         }));
 }));
 
-gulp.task('browserify', ['lint', 'unit'], function () {
-    return browserify('./app/js/app.js')
+gulp.task('babel', function () {
+    return gulp.src(['./app/js/**/*.js', '!./app/js/third-party/**/*.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(gulp.dest(target('/dist/src')));
+});
+
+gulp.task('browserify', ['lint', 'unit', 'babel'], function () {
+    return browserify(target('/dist/src/app.js'))
         .bundle({
             debug: true
         })
@@ -104,11 +113,8 @@ gulp.task('browserify', ['lint', 'unit'], function () {
         .pipe(connect.reload());
 });
 
-gulp.task('ngAnnotate', ['lint', 'unit'], function () {
-    return gulp.src([
-            'app/js/**/*.js',
-            '!app/js/third-party/**'
-        ])
+gulp.task('ngAnnotate', ['lint', 'unit', 'babel'], function () {
+    return gulp.src(target('app/js/**/*.js'))
         .pipe(ngAnnotate())
         .pipe(gulp.dest(target('/ngAnnotate')));
 });
