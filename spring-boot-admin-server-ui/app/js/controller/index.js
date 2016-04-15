@@ -1,7 +1,6 @@
 var angular = require('angular');
 var springBootAdmin = angular.module('springBootAdmin');
 
-springBootAdmin.controller('overviewCtrl', require('./overviewCtrl'));
 springBootAdmin.controller('appsCtrl', require('./appsCtrl'));
 springBootAdmin.controller('detailsCtrl', require('./apps/detailsCtrl'));
 springBootAdmin.controller('detailsMetricsCtrl', require('./apps/details/metricsCtrl'));
