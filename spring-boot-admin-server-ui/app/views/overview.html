@@ -3,7 +3,7 @@
 	<small>Here you'll find all Spring-Boot applications that registered themselves at this admin application.</small>
 	</h2>
 	<div>
-		<input placeholder="Filter" class="input-xxlarge" type="search" ng-model="searchFilter" />
+		<input placeholder="Filter" class="input-xxlarge" type="search" ng-model="list.searchFilter" />
 	</div>
 	<table class="table table-striped">
 		<col>
@@ -13,22 +13,22 @@
 		<col style="width: 266px;">
 		<thead>
 			<tr>
-				<th><span class="sortable" ng-class="orderByCssClass('name')" ng-click="orderBy('name')">Application</span>
+				<th><span class="sortable" ng-class="list.orderByCssClass('name')" ng-click="list.orderBy('name')">Application</span>
 					/
-					<span class="sortable" ng-class="orderByCssClass('healthUrl')" ng-click="orderBy('healthUrl')">URL</span>
+					<span class="sortable" ng-class="list.orderByCssClass('healthUrl')" ng-click="list.orderBy('healthUrl')">URL</span>
 				</th>
-				<th><span class="sortable" ng-class="orderByCssClass('info.version')" ng-click="orderBy('info.version')">Version</span></th>
+				<th><span class="sortable" ng-class="list.orderByCssClass('info.version')" ng-click="list.orderBy('info.version')">Version</span></th>
 				<th>Info</th>
 				<th>Status</th>
 				<th>
 					<div class="btn-group pull-right" title="add">
-						<a class="btn btn-success" ng-click="add()"><i class="icon-plus icon-white"></i></a>
+						<a class="btn btn-success" ng-click="list.add()"><i class="icon-plus icon-white"></i></a>
 					</div>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="application in applications|orderBy:order.column:order.descending|orderBy:'statusInfo.status':false|filter:searchFilter track by application.id">
+			<tr ng-repeat="application in list.applications|orderBy:order.column:order.descending|orderBy:'statusInfo.status':false|filter:list.searchFilter track by application.id">
 				<td>{{ application.name }}<br/><span class="muted">{{ application.serviceUrl || application.managementUrl || application.healthUrl }}</span></td>
 				<td>{{ application.version }}</td>
 				<td><span style="white-space: pre" ng-init="collapsed = true">{{application.infoShort}}</span>

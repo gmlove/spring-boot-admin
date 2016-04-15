@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 
 function createNote(app) {
     var title = app.name + (app.statusInfo.status === 'UP' ? ' is back ' : ' went ') + app.statusInfo.status;
@@ -10,11 +9,12 @@ function createNote(app) {
     Notification.notify(title, options);
 }
 
-class OverViewCtrl {
+class AppListController {
     constructor ($scope, $rootScope, $location, $interval, $state, $filter, $modal, Application, Notification) {
         this.$rootScope = $rootScope;
         this.$modal = $modal;
         this.$interval = $interval;
+        this.$filter = $filter;
         this.Application = Application;
     }
 
@@ -26,8 +26,8 @@ class OverViewCtrl {
 
         this.loadData();
 
-        this.intervalPromise = this.$interval(function () {
-            $scope.loadData();
+        this.intervalPromise = this.$interval(() => {
+            this.loadData();
         }, 10000);
     }
 
@@ -39,13 +39,13 @@ class OverViewCtrl {
         app.info = {};
         app.needRefresh = true;
         //find application in known applications and copy state --> less flickering
-        for (var j = 0; $scope.applications  && j < $scope.applications.length; j++) {
-            if (app.id === $scope.applications[j].id) {
-                app.infoShort = $scope.applications[j].infoShort;
-                app.infoDetails = $scope.applications[j].infoDetails;
-                app.version = $scope.applications[j].version;
-                app.capabilities = $scope.applications[j].capabilities;
-                if (app.statusInfo.status !== $scope.applications[j].statusInfo.status) {
+        for (var j = 0; this.applications  && j < this.applications.length; j++) {
+            if (app.id === this.applications[j].id) {
+                app.infoShort = this.applications[j].infoShort;
+                app.infoDetails = this.applications[j].infoDetails;
+                app.version = this.applications[j].version;
+                app.capabilities = this.applications[j].capabilities;
+                if (app.statusInfo.status !== this.applications[j].statusInfo.status) {
                     createNote(app); //issue notifiaction on state change
                 } else {
                     // app.needRefresh = false; //if state hasn't change don't fetch info
@@ -56,16 +56,16 @@ class OverViewCtrl {
         if (app.needRefresh) {
             app.refreshing = true;
             app.getCapabilities();
-            app.getInfo().then(function(info) {
+            app.getInfo().then((info) => {
                 app.version = info.version;
                 app.infoDetails = null;
                 app.infoShort = '';
                 delete info.version;
-                var infoYml = $filter('yaml')(info);
+                var infoYml = this.$filter('yaml')(info);
                 if (infoYml !== '{}\n') {
-                    app.infoShort = $filter('limitLines')(infoYml, 3);
+                    app.infoShort = this.$filter('limitLines')(infoYml, 3);
                     if (app.infoShort !== infoYml) {
-                        app.infoDetails = $filter('limitLines')(infoYml, 32000, 3);
+                        app.infoDetails = this.$filter('limitLines')(infoYml, 32000, 3);
                     }
                 }
             }).finally(function(){
@@ -75,9 +75,9 @@ class OverViewCtrl {
     }
 
     loadData() {
-        this.Application.query(function (applications) {
+        this.Application.query((applications) => {
             for (var i = 0; i < applications.length; i++) {
-                this.$rootScope.refresh(applications[i]);
+                this.refresh(applications[i]);
             }
             this.applications = applications;
         });
@@ -124,4 +124,8 @@ class OverViewCtrl {
     }
 }
 
-module.exports = OverViewCtrl;
+export default {
+    controller: AppListController,
+    controllerAs: 'list',
+    templateUrl: '/components/app_list/app_list.component.html'
+}

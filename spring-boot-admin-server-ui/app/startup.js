@@ -16,8 +16,8 @@ angular.module('springBootAdmin', [
     $stateProvider
         .state('overview', {
             url: '/overview',
-            templateUrl: 'views/overview.html',
-            controller: 'overviewCtrl'
+            template: '<app-list></app-list>',
+
         })
         .state('about', {
             url: '/about',

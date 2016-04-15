@@ -15,16 +15,12 @@
  */
 'use strict';
 
-var _ = require('lodash');
+import * as _ from 'lodash';
 
 module.exports = function ($resource, $http, $q, ApplicationLogging, dataStorage) {
 
     var isEndpointPresent = function(endpoint, configprops) {
-        if (configprops[endpoint]) {
-           return true;
-        } else {
-           return false;
-        }
+        return !!configprops[endpoint];
     };
 
     var Application = function (baseUrl, name, id, opts) {
