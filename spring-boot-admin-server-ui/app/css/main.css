@@ -427,3 +427,22 @@ dl.health-status td {
 .no-scroll {
   overflow: hidden;
 }
+
+.modal-main {
+  overflow-y: scroll;
+}
+
+.modal-main .modal-container {
+  margin: 30px 50px 50px 50px;
+}
+
+#new-app-form .more-config {
+  margin-top: -16px;
+}
+
+#new-app-form input {
+  width: 98%;
+}
+#new-app-form label {
+  display: initial;
+}

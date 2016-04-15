@@ -1,23 +1,13 @@
-<div style="overflow-y: scroll" ng-style="{'max-height': maxHeight}">
-    <div style="margin: 30px 50px 50px 50px">
+<div class="modal-main" ng-style="{'max-height': maxHeight}">
+    <div class="modal-container">
         <div class="page-header">
             <h2>Create a new application</h2>
         </div>
-        <style>
-            #new-app-form input {
-                width: 98%;
-            }
-            #new-app-form label {
-                display: initial;
-            }
-        </style>
         <form id="new-app-form" ng-submit="onSubmit(app.url, app.name, app.id, app.opts)">
             <div class="form-group">
                 <div>
                     <label>ID *</label>
-                    <button style="float: right; margin-top: -16px;"
-                            class="btn btn-success"
-                            ng-click="toggle($event)">
+                    <button class="more-config btn btn-success pull-right" ng-click="toggle($event)">
                         More Config
                     </button>
                 </div>
