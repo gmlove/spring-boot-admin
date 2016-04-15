@@ -23,12 +23,24 @@ class AppEditorController {
     }
 
     $onInit() {
-        this.app = {
-            id: '',
-            name: '',
-            url: '',
-            opts: {}
-        };
+        switch (this.role) {
+            case 'add':
+                this.app = {
+                    id: '',
+                    name: '',
+                    url: '',
+                    opts: {}
+                };
+                break;
+
+            case 'edit':
+                this.Application.get({id: this.id}, app => this.app = app);
+                break;
+
+            default:
+                throw new Error('Role is illegal.');
+        }
+
 
         this.$rootScope.$broadcast('frozen', true);
         
@@ -59,9 +71,20 @@ class AppEditorController {
     }
 
     onSubmit({url, name, id, opts}) {
-        var app = new this.Application(url, name, id, opts);
-        this.Application.add(app);
-        this.$rootScope.refresh(app);
+        switch (this.role) {
+            case 'add':
+                var app = new this.Application(url, name, id, opts);
+                this.Application.add(app);
+                break;
+
+            case 'edit':
+                this.app.$save();
+                break;
+
+            default:
+                throw new Error('Role is illegal.');
+        }
+
         this.$rootScope.modalInstance.close();
     }
 }
@@ -69,5 +92,9 @@ class AppEditorController {
 export default {
     controller: AppEditorController,
     controllerAs: 'editor',
-    templateUrl: '/components/app_editor/app_editor.component.html'
+    templateUrl: '/components/app_editor/app_editor.component.html',
+    bindings: {
+        role: '@',
+        id: '@'
+    }
 }

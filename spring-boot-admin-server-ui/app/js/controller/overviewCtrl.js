@@ -78,13 +78,16 @@ module.exports = function ($scope, $rootScope, $location, $interval, $state, $fi
 
     $scope.add = function () {
         $rootScope.modalInstance = $modal.open({
-            templateUrl: 'views/app.html',
+            template: `<app-editor role="add"></app-editor>`,
             size: 'lg'
         });
     };
 
     $scope.edit = function (application) {
-
+        $rootScope.modalInstance = $modal.open({
+            template: `<app-editor role="edit" id="${application.id}"></app-editor>`,
+            size: 'lg'
+        });
     };
 
     $scope.remove = function (application) {
