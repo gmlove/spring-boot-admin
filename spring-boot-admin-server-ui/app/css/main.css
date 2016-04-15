@@ -423,3 +423,7 @@ dl.health-status td {
 .header--application-urls .navbar-inner li>a:hover {
   text-decoration:underline;
 }
+
+.no-scroll {
+  overflow: hidden;
+}

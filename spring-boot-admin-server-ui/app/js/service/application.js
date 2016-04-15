@@ -51,8 +51,7 @@ module.exports = function ($resource, $http, $q, ApplicationLogging, dataStorage
     };
 
     var _applications = [
-        new Application('http://localhost:8081', 'sample-app1', 'sample-app1'),
-        new Application('http://localhost:8080', 'sample-app', 'sample-app'),
+        new Application('http://localhost:8080', 'sample-app', 'sample-app')
     ];
     _.each(dataStorage.query(), function(app) {
         if (Application.get(app)) {

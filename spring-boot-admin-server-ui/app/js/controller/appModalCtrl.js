@@ -25,7 +25,9 @@ module.exports = function ($scope, $rootScope, $modal, Application) {
         opts: {}
     };
     
+    $rootScope.noScroll = true;
     $scope.showMoreConfig = false;
+    $scope.maxHeight = angular.element(window).height() - 100;
     
     $scope.onUrlChange = function(url, opts) {
         opts.managementUrl = opts.managementUrl || url;
@@ -35,10 +37,8 @@ module.exports = function ($scope, $rootScope, $modal, Application) {
         var endpoints = ['health', 'configprops', 'info', 'metrics', 'env', 'env/reset', 'refresh', 'dump', 'trace', 'activiti', 'logfile'];
         _.map(endpoints, function (endpoint) {
             var key = endpoint.replace(/\/\w/, function(s){return s.substr(1).toUpperCase();});
-            console.log(key);
             opts[key + 'Url'] = url + '/' + endpoint;
         });
-        console.log(opts);
     };
 
     $scope.toggle = function(event) {
@@ -52,5 +52,9 @@ module.exports = function ($scope, $rootScope, $modal, Application) {
         Application.add(app);
         $rootScope.refresh(app);
         $rootScope.modalInstance.close();
-    }
+    };
+    
+    $scope.$on('$destroy', function () {
+        $rootScope.noScroll = false;
+    });
 };
