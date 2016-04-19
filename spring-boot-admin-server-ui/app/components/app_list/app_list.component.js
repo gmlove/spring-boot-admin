@@ -8,12 +8,16 @@ class AppListController {
     }
 
     $onInit() {
+        this.listeners = [];
+        
         this.order = {
             column: 'name',
             descending: false
         };
 
         this.loadData();
+        
+        this.listeners.push(this.$rootScope.$on('frozen', (e, flag) => this.onFrozen(e, flag)));
 
         this.intervalPromise = this.$interval(() => {
             this.loadData();
@@ -22,6 +26,12 @@ class AppListController {
 
     $onDestroy() {
         this.$interval.cancel(this.intervalPromise);
+    }
+
+    onFrozen(event, flag) {
+        if(!flag) {
+            this.loadData();
+        }
     }
 
     refresh(app) {

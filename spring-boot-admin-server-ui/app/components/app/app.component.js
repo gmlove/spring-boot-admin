@@ -4,14 +4,18 @@ class AppController {
     }
 
     $onInit() {
+        this.listeners = [];
+        
         this.$rootScope.scrollable = true;
-        this.disposeScrollable = this.$rootScope.$on('frozen', (event, flag) => {
-            this.$rootScope.scrollable = !flag;
-        });
+        this.listeners.push(this.$rootScope.$on('frozen', (e, flag) => this.onFrozen(e, flag)));
     }
 
     $onDestroy() {
-        this.disposeScrollable();
+        this.listeners.forEach(fn => fn());
+    }
+    
+    onFrozen(event, flag) {
+        this.$rootScope.scrollable = !flag;
     }
 }
 
