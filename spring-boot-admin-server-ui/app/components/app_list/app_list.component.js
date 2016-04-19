@@ -110,12 +110,8 @@ class AppListController {
     }
 
     remove(application) {
-        application.$remove(function () {
-            var index = this.applications.indexOf(application);
-            if (index > -1) {
-                $scope.applications.splice(index, 1);
-            }
-        });
+        application.$remove();
+        this.$rootScope.$broadcast('frozen', false);
     }
 
     orderBy(column) {
