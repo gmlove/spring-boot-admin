@@ -27,7 +27,7 @@ module.exports = function ($http, $q, jolokia) {
     };
 
     var findLogbackMbean = function (app) {
-        return jolokia.search(app.baseUrl + '/jolokia/', 'ch.qos.logback.classic:Name=*,Type=ch.qos.logback.classic.jmx.JMXConfigurator').then(function (response) {
+        return jolokia.search(app.config.url + '/jolokia/', 'ch.qos.logback.classic:Name=*,Type=ch.qos.logback.classic.jmx.JMXConfigurator').then(function (response) {
             if (response.value.length === 1) {
                 return response.value[0];
             }
@@ -59,15 +59,15 @@ module.exports = function ($http, $q, jolokia) {
                             arguments: [loggers[j].name]
                         });
                     }
-                    return jolokia.bulkRequest(app.baseUrl + '/jolokia/', requests);
+                    return jolokia.bulkRequest(app.config.url + '/jolokia/', requests);
                 },
                 setLoglevel: function (logger, level) {
-                    return jolokia.exec(app.baseUrl + '/jolokia/', logbackMbean, 'setLoggerLevel', [logger,
+                    return jolokia.exec(app.config.url + '/jolokia/', logbackMbean, 'setLoggerLevel', [logger,
                         level
                     ]);
                 },
                 getAllLoggers: function () {
-                    return jolokia.readAttr(app.baseUrl + '/jolokia/', logbackMbean, 'LoggerList');
+                    return jolokia.readAttr(app.config.url + '/jolokia/', logbackMbean, 'LoggerList');
                 }
             };
         });

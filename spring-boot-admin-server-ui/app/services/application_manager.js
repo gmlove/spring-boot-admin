@@ -70,11 +70,11 @@ class Application {
     }
 
     getThreadDump() {
-        return this._manager.$http.get(this.config.dumpUrl).then(res => res.data.content);
+        return this._manager.$http.get(this.config.dumpUrl).then(res => res.data);
     }
 
     getTraces() {
-        return this._manager.$http.get(this.config.traceUrl).then(res => res.data.content);
+        return this._manager.$http.get(this.config.traceUrl).then(res => res.data);
     }
 
     getActiviti() {
