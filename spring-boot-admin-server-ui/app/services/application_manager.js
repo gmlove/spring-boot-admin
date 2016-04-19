@@ -57,11 +57,10 @@ class Application {
         return this._isDefault;
     }
 
-    get health() {
+    getHealth() {
         return this._manager.$http.get(this.config.healthUrl).then(res => res.data);
     }
-
-
+    
     getInfo() {
         return this._manager.$http.get(this.config.infoUrl).then(res => res.data);
     }
