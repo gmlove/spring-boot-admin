@@ -34,7 +34,7 @@
 					<td colspan="2">
 						<span>Total Memory ({{ metrics['mem.used'] | humanBytes:'K' }} / {{ metrics['mem'] | humanBytes:'K' }})</span>
 						<div class="progress" style="margin-bottom: 0px;">
-							<div class="bar" style="width:{{ memPercentage = (metrics['mem.used'] / metrics['mem'] * 100 | number:2) }}%;" ng-class="{'bar-success': memPercentage < 75, 'bar-warning': memPercentage >= 75 && memPercentage < 95, 'bar-danger': memPercentage >= 95}">
+							<div class="bar" style="width:{{ memPercentage = (metrics['mem.used'] / metrics['mem'] * 100 ) }}%;" ng-class="{'bar-success': memPercentage < 75, 'bar-warning': memPercentage >= 75 && memPercentage < 95, 'bar-danger': memPercentage >= 95}">
 								{{memPercentage}}%
 							</div>
 						</div>
@@ -44,7 +44,7 @@
 					<td colspan="2">
 						<span>Heap Memory ({{ metrics['heap.used'] | humanBytes:'K' }} / {{ metrics['heap.committed'] | humanBytes:'K' }})</span>
 						<div class="progress" style="margin-bottom: 0px;">
-							<div class="bar" style="width:{{ heapPercentage = (metrics['heap.used'] / metrics['heap.committed'] * 100 | number:2) }}%;" ng-class="{'bar-success': heapPercentage < 75, 'bar-warning': heapPercentage >= 75 && heapPercentage < 95, 'bar-danger': heapPercentage >= 95}">
+							<div class="bar" style="width:{{ heapPercentage = (metrics['heap.used'] / metrics['heap.committed'] * 100) }}%;" ng-class="{'bar-success': heapPercentage < 75, 'bar-warning': heapPercentage >= 75 && heapPercentage < 95, 'bar-danger': heapPercentage >= 95}">
 								{{heapPercentage}}%
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 				<tbody>
 					<tr ng-if="metrics['systemload.average'] != null && metrics['systemload.average'] >= 0.0">
 						<td>Systemload</td>
-						<td>{{metrics['systemload.average'] | number:2}} (last min. &#x2300; runq-sz)</td>
+						<td>{{metrics['systemload.average'] }} (last min. &#x2300; runq-sz)</td>
 					</tr>
 					<tr>
 						<td>Uptime</td>
@@ -131,8 +131,8 @@
 						<td colspan="2">
 							<span>{{name | capitalize}} Datasource Connections (active: {{ value.active }})</span>
 							<div class="progress" style="margin-bottom: 0px;">
-								<div class="bar" style="width:{{ value.usage * 100 | number:2 }}%;" ng-class="{'bar-success': value.usage < 0.75, 'bar-warning': value.usage >= 0.75 && value.usage < 0.95, 'bar-danger': value.usage >= 0.95}">
-									{{value.usage * 100 | number}}%
+								<div class="bar" style="width:{{ value.usage * 100 }}%;" ng-class="{'bar-success': value.usage < 0.75, 'bar-warning': value.usage >= 0.75 && value.usage < 0.95, 'bar-danger': value.usage >= 0.95}">
+									{{value.usage * 100 }}%
 								</div>
 							</div>
 						</td>
@@ -148,11 +148,11 @@
 						<td colspan="2">
 							<span>{{name | capitalize}} (size: {{ value.size }})</span>
 							<div class="progress" style="margin-bottom: 0px;">
-								<div class="bar bar-success" style="width:{{ value.hitRatio * 100 | number:2 }}%;">
-									{{value.hitRatio * 100 | number}}% hits
+								<div class="bar bar-success" style="width:{{ value.hitRatio * 100  }}%;">
+									{{value.hitRatio * 100}}% hits
 								</div>
-								<div class="bar bar-danger" style="width:{{ value.missRatio * 100 | number:2 }}%;">
-									{{value.missRatio * 100 | number}}% misses
+								<div class="bar bar-danger" style="width:{{ value.missRatio * 100  }}%;">
+									{{value.missRatio * 100}}% misses
 								</div>
 							</div>
 						</td>

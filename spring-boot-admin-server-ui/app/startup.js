@@ -30,6 +30,7 @@ angular.module('springBootAdmin', [
             templateUrl: 'views/apps.html',
             resolve: {
                 application: function ($stateParams, applicationManager) {
+                    console.log(2);
                     return applicationManager.get($stateParams.id);
                 }
             }
