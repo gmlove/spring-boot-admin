@@ -62,27 +62,27 @@ class Application {
     }
 
 
-    get info() {
+    getInfo() {
         return this._manager.$http.get(this.config.infoUrl).then(res => res.data);
     }
 
-    get metrics() {
+    getMetrics() {
         return this._manager.$http.get(this.config.metricsUrl).then(res => res.data);
     }
 
-    get threadDump() {
+    getThreadDump() {
         return this._manager.$http.get(this.config.dumpUrl).then(res => res.data.content);
     }
 
-    get traces() {
+    getTraces() {
         return this._manager.$http.get(this.config.traceUrl).then(res => res.data.content);
     }
 
-    get activiti() {
+    getActiviti() {
         return this._manager.$http.get(this.config.activitiUrl.then(res => res.data));
     }
 
-    get logging() {
+    getLogging() {
         return this._manager.ApplicationLogging.getLoggingConfigurator(this);
     }
 

@@ -65,7 +65,7 @@ class AppListController {
         if (true) {
             app.refreshing = true;
             app.getCapabilities();
-            app.info.then((info) => {
+            app.getInfo().then((info) => {
                 app.statusInfo.status = 'UP';
                 app.version = info.version;
                 app.infoDetails = null;
