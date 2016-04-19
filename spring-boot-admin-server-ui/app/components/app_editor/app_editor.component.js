@@ -17,34 +17,35 @@
 import * as _ from 'lodash';
 
 class AppEditorController {
-    constructor($rootScope, Application) {
+    constructor($rootScope, applicationManager) {
         this.$rootScope = $rootScope;
-        this.Application = Application;
+        this.manager = applicationManager;
     }
 
     $onInit() {
         switch (this.role) {
             case 'add':
-                this.app = {
-                    id: '',
-                    name: '',
-                    url: '',
-                    opts: {}
-                };
+                this.app = this.manager.create();
+                this.config = this.app.editableConfig;
+                this.isIdEditable = true;
                 break;
 
             case 'edit':
-                this.Application.get({id: this.id}, app => this.app = app);
+                this.manager.get(this.id).then(app => {
+                    this.app = app;
+                    this.config = app.editableConfig
+                });
+                this.isIdEditable = false;
                 break;
 
             default:
                 throw new Error('Role is illegal.');
         }
-
-
+        
         this.$rootScope.$broadcast('frozen', true);
         
         this.showMoreConfig = false;
+        this.endpoints = this.manager.endpoints;
         this.maxHeight = angular.element(window).height() - 100;
     }
 
@@ -52,15 +53,9 @@ class AppEditorController {
         this.$rootScope.$broadcast('frozen', false);
     }
 
-    onUrlChange({url, opts}) {
-        opts.managementUrl = opts.managementUrl || url;
-        opts.healthUrl = opts.healthUrl || url + '/health';
-        opts.serviceUrl = opts.serviceUrl || url;
-
-        var endpoints = ['health', 'configprops', 'info', 'metrics', 'env', 'env/reset', 'refresh', 'dump', 'trace', 'activiti', 'logfile'];
-        _.map(endpoints, function (endpoint) {
-            var key = endpoint.replace(/\/\w/, function(s){return s.substr(1).toUpperCase();});
-            opts[key + 'Url'] = url + '/' + endpoint;
+    onUrlChange(config) {
+        this.endpoints.forEach(endpoint => {
+            config[endpoint.key] = this.manager.getDefaultUrl(endpoint, config.url);
         });
     }
 
@@ -70,21 +65,8 @@ class AppEditorController {
         this.showMoreConfig = !this.showMoreConfig;
     }
 
-    onSubmit({url, name, id, opts}) {
-        switch (this.role) {
-            case 'add':
-                var app = new this.Application(url, name, id, opts);
-                this.Application.add(app);
-                break;
-
-            case 'edit':
-                this.app.$save();
-                break;
-
-            default:
-                throw new Error('Role is illegal.');
-        }
-
+    onSubmit() {
+        this.app.$save();
         this.$rootScope.modalInstance.close();
     }
 }

@@ -6,7 +6,8 @@ angular.module('springBootAdmin', [
     'ui.router',
     'ui.bootstrap',
     'LocalStorageModule'
-]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
+])
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix("spring-boot-admin");
 
     $urlRouterProvider
@@ -16,8 +17,7 @@ angular.module('springBootAdmin', [
     $stateProvider
         .state('overview', {
             url: '/overview',
-            template: '<app-list></app-list>',
-
+            template: '<app-list></app-list>'
         })
         .state('about', {
             url: '/about',
@@ -29,11 +29,8 @@ angular.module('springBootAdmin', [
             controller: 'appsCtrl',
             templateUrl: 'views/apps.html',
             resolve: {
-                application: function ($stateParams, Application) {
-                    return Application.get({
-                        id: $stateParams.id
-                    })
-                        .$promise;
+                application: function ($stateParams, applicationManager) {
+                    return applicationManager.get($stateParams.id);
                 }
             }
         })
@@ -87,6 +84,13 @@ angular.module('springBootAdmin', [
             templateUrl: 'views/journal.html',
             controller: 'journalCtrl'
         });
-}).run(function ($rootScope, $state) {
+})
+.run(function ($rootScope, $state, applicationManager) {
     $rootScope.$state = $state;
+    
+    var defaultApps = [
+        { id: 'sample-app', name: 'sample-app', url: 'http://localhost:8080' }
+    ];
+    
+    defaultApps.forEach(options => applicationManager.create(options).$save());
 });

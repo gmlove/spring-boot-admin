@@ -52,9 +52,9 @@
     "yargs": "~1.3.3"
   },
   "browser": {
-    "jquery": "./node_modules/jquery/dist/jquery.min.js",
-    "bootstrap": "./app/js/third-party/bootstrap/bootstrap.min.js",
-    "angular": "./node_modules/angular/angular.min.js",
+    "jquery": "./node_modules/jquery/dist/jquery.js",
+    "bootstrap": "./app/js/third-party/bootstrap/bootstrap.js",
+    "angular": "./node_modules/angular/angular.js",
     "angular-mocks": "./node_modules/angular-mocks/angular-mocks.js",
     "angular-route": "./node_modules/angular-route/angular-route.min.js",
     "angular-resource": "./node_modules/angular-resource/angular-resource.min.js",

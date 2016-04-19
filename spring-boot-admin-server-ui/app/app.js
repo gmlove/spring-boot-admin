@@ -15,9 +15,9 @@
  */
 
 import 'es5-shim';
-import 'es5-sham';
 
 import 'jquery';
+import 'angular';
 import 'angular-resource';
 import 'angular-route';
 import 'angular-local-storage';
@@ -28,6 +28,7 @@ import 'jolokia';
 
 import './startup';
 import './components/module';
+import './services/module';
 
 import './js/controller';
 import './js/service';

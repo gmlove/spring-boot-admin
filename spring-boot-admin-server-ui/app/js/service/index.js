@@ -3,7 +3,7 @@
 var angular = require('angular');
 var springBootAdmin = angular.module('springBootAdmin');
 
-springBootAdmin.factory('Application', require('./application'));
+
 springBootAdmin.service('ApplicationLogging', require('./applicationLogging'));
 springBootAdmin.service('ApplicationJMX', require('./applicationJmx'));
 springBootAdmin.service('Abbreviator', require('./abbreviator'));

@@ -1,21 +1,10 @@
-
-function createNote(app) {
-    var title = app.name + (app.statusInfo.status === 'UP' ? ' is back ' : ' went ') + app.statusInfo.status;
-    var options = { tag: app.id,
-        body: 'Instance ' + app.id + '\n' + app.healthUrl,
-        icon: (app.statusInfo.status === 'UP' ? 'img/ok.png' : 'img/error.png'),
-        timeout: 15000,
-        url: $state.href('apps.details', {id: app.id}) };
-    Notification.notify(title, options);
-}
-
 class AppListController {
-    constructor ($scope, $rootScope, $location, $interval, $state, $filter, $modal, Application, Notification) {
+    constructor ($rootScope, $interval, $filter, $modal, applicationManager, Notification) {
         this.$rootScope = $rootScope;
         this.$modal = $modal;
         this.$interval = $interval;
         this.$filter = $filter;
-        this.Application = Application;
+        this.manager = applicationManager;
     }
 
     $onInit() {
@@ -36,8 +25,18 @@ class AppListController {
     }
 
     refresh(app) {
-        app.info = {};
-        app.needRefresh = true;
+        function createNote(app) {
+            var title = app.name + (app.statusInfo.status === 'UP' ? ' is back ' : ' went ') + app.statusInfo.status;
+            var options = { tag: app.id,
+                body: 'Instance ' + app.id + '\n' + app.healthUrl,
+                icon: (app.statusInfo.status === 'UP' ? 'img/ok.png' : 'img/error.png'),
+                timeout: 15000,
+                url: $state.href('apps.details', {id: app.id}) };
+            Notification.notify(title, options);
+        }
+        
+        // app.info = {};
+        // app.needRefresh = true;
         //find application in known applications and copy state --> less flickering
         for (var j = 0; this.applications  && j < this.applications.length; j++) {
             if (app.id === this.applications[j].id) {
@@ -53,10 +52,11 @@ class AppListController {
                 break;
             }
         }
-        if (app.needRefresh) {
+        if (true) {
             app.refreshing = true;
             app.getCapabilities();
-            app.getInfo().then((info) => {
+            app.info.then((info) => {
+                app.statusInfo.status = 'UP';
                 app.version = info.version;
                 app.infoDetails = null;
                 app.infoShort = '';
@@ -68,6 +68,8 @@ class AppListController {
                         app.infoDetails = this.$filter('limitLines')(infoYml, 32000, 3);
                     }
                 }
+            }).catch(err => {
+                app.statusInfo.status = 'ERROR';
             }).finally(function(){
                 app.refreshing = false;
             });
@@ -75,7 +77,7 @@ class AppListController {
     }
 
     loadData() {
-        this.Application.query((applications) => {
+        this.manager.query().then((applications) => {
             for (var i = 0; i < applications.length; i++) {
                 this.refresh(applications[i]);
             }

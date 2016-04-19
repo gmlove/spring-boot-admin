@@ -4,7 +4,7 @@ class AppController {
     }
 
     $onInit() {
-        this.scrollable = true;
+        this.$rootScope.scrollable = true;
         this.disposeScrollable = this.$rootScope.$on('frozen', (event, flag) => {
             this.$rootScope.scrollable = !flag;
         });
