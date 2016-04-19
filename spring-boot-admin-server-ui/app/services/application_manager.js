@@ -26,9 +26,10 @@ function isEndpointPresent(endpoint, configprops) {
 }
 
 class Application {
-    constructor(config, manager) {
+    constructor(config, manager, isDefault) {
         this._id = config.id || null;
         this._manager = manager;
+        this._isDefault = isDefault;
 
         this.init(config);
     }
@@ -50,6 +51,10 @@ class Application {
     
     get id() {
         return this._id;
+    }
+    
+    get isDefault() {
+        return this._isDefault;
     }
 
     get health() {
@@ -128,7 +133,7 @@ class Application {
     }
 
     $remove() {
-        this._manager.remove(this.id);
+        this._manager.remove(this);
     }
 }
 
@@ -154,10 +159,12 @@ class ApplicationManager {
             { name: 'activiti', key: 'activitiUrl' }, 
             { name: 'logfile', key: 'logfileUrl'}
         ];
+        
+        this.restore();
     }
 
-    create(appConfig={}) {
-        return new Application(appConfig, this);
+    create(appConfig={}, isDefault=false) {
+        return new Application(appConfig, this, isDefault);
     }
 
     get(id) {
@@ -180,13 +187,17 @@ class ApplicationManager {
         return this.$q.resolve(Array.from(this.applications.values()));
     }
 
-    remove(id) {
-        return this.applications.delete(id);
+    remove(app) {
+        if(!app.isDefault) {
+            this.dataStorage.remove(app.id);
+        }
+        
+        return this.applications.delete(app.id);
     }
 
     restore() {
-        this.dataStorage.query('application').forEach((appConfig) => {
-            this.create(appConfig).$save(true);
+        this.dataStorage.query('application').forEach((config) => {
+            this.create(config).$save(true);
         });
     }
 
@@ -195,6 +206,11 @@ class ApplicationManager {
         if(oldApp && oldApp !== app && !override) { return; }
 
         this.applications.set(app.id, app);
+        
+        if(!app.isDefault) {
+            this.dataStorage.remove(app.id);
+            this.dataStorage.add(app.config);
+        }
     }
 }
 

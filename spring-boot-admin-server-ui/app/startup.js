@@ -92,5 +92,5 @@ angular.module('springBootAdmin', [
         { id: 'sample-app', name: 'sample-app', url: 'http://localhost:8080' }
     ];
     
-    defaultApps.forEach(options => applicationManager.create(options).$save());
+    defaultApps.forEach(options => applicationManager.create(options, true).$save());
 });
