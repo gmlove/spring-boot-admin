@@ -128,7 +128,7 @@ class Application {
             timestamp: Date.now()
         };
 
-        this._manager.save(this, override);
+        return this._manager.save(this, override);
     }
 
     $remove() {
@@ -137,9 +137,10 @@ class Application {
 }
 
 class ApplicationManager {
-    constructor($http, $q, ApplicationLogging, dataStorage) {
+    constructor($http, $q, $window, ApplicationLogging, dataStorage) {
         this.$q = $q;
         this.$http = $http;
+        this.$window = $window;
         this.dataStorage = dataStorage;
         this.ApplicationLogging = ApplicationLogging;
         
@@ -201,8 +202,13 @@ class ApplicationManager {
     }
 
     save(app, override=false) {
+        if(this.applications.has(app.id)) { 
+            this.$window.alert('The ID already exist!');
+            return false; 
+        }
+        
         var oldApp = this.applications.get(app.id);
-        if(oldApp && oldApp !== app && !override) { return; }
+        if(oldApp && oldApp !== app && !override) { return true; }
 
         this.applications.set(app.id, app);
         
@@ -210,9 +216,11 @@ class ApplicationManager {
             this.dataStorage.remove(app.id);
             this.dataStorage.add(app.config);
         }
+        
+        return true;
     }
 }
 
-export default function($http, $q, ApplicationLogging, dataStorage) {
-    return new ApplicationManager($http, $q, ApplicationLogging, dataStorage);
+export default function($http, $q, $window, ApplicationLogging, dataStorage) {
+    return new ApplicationManager($http, $q, $window, ApplicationLogging, dataStorage);
 }

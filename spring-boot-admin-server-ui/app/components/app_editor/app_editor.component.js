@@ -66,8 +66,9 @@ class AppEditorController {
     }
 
     onSubmit() {
-        this.app.$save();
-        this.$rootScope.modalInstance.close();
+        if(this.app.$save()) {
+            this.$rootScope.modalInstance.close();
+        }
     }
 }
 
