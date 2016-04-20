@@ -202,7 +202,7 @@ class ApplicationManager {
     }
 
     save(app, override=false) {
-        if(this.applications.has(app.id)) {
+        if(this.applications.has(app.id) && this.applications.get(app.id) !== app) {
             this.$window.alert('The ID already exist!');
             return false;
         }
