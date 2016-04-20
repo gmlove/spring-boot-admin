@@ -35,9 +35,9 @@ class Application {
     }
 
     getCapabilities() {
-        if(!this.managementUrl) { return null; }
+        if(!this.config.managementUrl) { return null; }
 
-        this._manager.$http.get(this.configpropsUrl).then((configprops) => {
+        this._manager.$http.get(this.config.configpropsUrl).success((configprops) => {
             this.capabilities = {
                 logfile: isEndpointPresent('logfileMvcEndpoint', configprops),
                 activiti: isEndpointPresent('processEngineEndpoint', configprops),
@@ -48,11 +48,11 @@ class Application {
             };
         });
     }
-    
+
     get id() {
         return this._id;
     }
-    
+
     get isDefault() {
         return this._isDefault;
     }
@@ -60,7 +60,7 @@ class Application {
     getHealth() {
         return this._manager.$http.get(this.config.healthUrl).then(res => res.data);
     }
-    
+
     getInfo() {
         return this._manager.$http.get(this.config.infoUrl).then(res => res.data);
     }
@@ -103,11 +103,11 @@ class Application {
 
     init(config) {
         const endpoints = [
-            { name: 'management', key:'managementUrl' }, 
-            { name: 'service', key: 'serviceUrl'}, 
+            { name: 'management', key:'managementUrl' },
+            { name: 'service', key: 'serviceUrl'},
             ...this._manager.endpoints
         ];
-        
+
         endpoints.filter(endpoint => !config[endpoint.key])
              .forEach(endpoint => config[endpoint.key] = this._manager.getDefaultUrl(endpoint, config.url));
 
@@ -120,9 +120,9 @@ class Application {
         if(!this._id) {
             this._id = this.editableConfig.id;
         }
-        
+
         this.init(this.editableConfig);
-        
+
         this.statusInfo = {
             status: "IDLE",
             timestamp: Date.now()
@@ -143,7 +143,7 @@ class ApplicationManager {
         this.$window = $window;
         this.dataStorage = dataStorage;
         this.ApplicationLogging = ApplicationLogging;
-        
+
         this.applications = new Map();
 
         this.endpoints = [
@@ -151,15 +151,15 @@ class ApplicationManager {
             { name: 'configprops', key: 'configpropsUrl'},
             { name: 'info', key: 'infoUrl' },
             { name: 'metrics', key: 'metricsUrl' },
-            { name: 'env', key: 'envUrl' }, 
-            { name: 'env/reset', key: 'envResetUrl' }, 
-            { name: 'refresh', key: 'refreshUrl' }, 
-            { name: 'dump', key: 'dumpUrl' }, 
-            { name: 'trace', key: 'traceUrl' }, 
-            { name: 'activiti', key: 'activitiUrl' }, 
+            { name: 'env', key: 'envUrl' },
+            { name: 'env/reset', key: 'envResetUrl' },
+            { name: 'refresh', key: 'refreshUrl' },
+            { name: 'dump', key: 'dumpUrl' },
+            { name: 'trace', key: 'traceUrl' },
+            { name: 'activiti', key: 'activitiUrl' },
             { name: 'logfile', key: 'logfileUrl'}
         ];
-        
+
         this.restore();
     }
 
@@ -182,7 +182,7 @@ class ApplicationManager {
                 return `${url}/${endpoint.name}`;
         }
     }
-    
+
     query() {
         return this.$q.resolve(Array.from(this.applications.values()));
     }
@@ -191,7 +191,7 @@ class ApplicationManager {
         if(!app.isDefault) {
             this.dataStorage.remove(app.id);
         }
-        
+
         return this.applications.delete(app.id);
     }
 
@@ -202,21 +202,21 @@ class ApplicationManager {
     }
 
     save(app, override=false) {
-        if(this.applications.has(app.id)) { 
+        if(this.applications.has(app.id)) {
             this.$window.alert('The ID already exist!');
-            return false; 
+            return false;
         }
-        
+
         var oldApp = this.applications.get(app.id);
         if(oldApp && oldApp !== app && !override) { return true; }
 
         this.applications.set(app.id, app);
-        
+
         if(!app.isDefault) {
             this.dataStorage.remove(app.id);
             this.dataStorage.add(app.config);
         }
-        
+
         return true;
     }
 }
