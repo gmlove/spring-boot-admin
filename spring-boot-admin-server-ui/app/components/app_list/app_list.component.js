@@ -9,14 +9,14 @@ class AppListController {
 
     $onInit() {
         this.listeners = [];
-        
+
         this.order = {
             column: 'name',
             descending: false
         };
 
         this.loadData();
-        
+
         this.listeners.push(this.$rootScope.$on('frozen', (e, flag) => this.onFrozen(e, flag)));
 
         this.intervalPromise = this.$interval(() => {
@@ -44,7 +44,7 @@ class AppListController {
                 url: $state.href('apps.details', {id: app.id}) };
             Notification.notify(title, options);
         }
-        
+
         // app.info = {};
         // app.needRefresh = true;
         //find application in known applications and copy state --> less flickering

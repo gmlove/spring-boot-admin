@@ -37,15 +37,20 @@ class Application {
     getCapabilities() {
         if(!this.config.managementUrl) { return null; }
 
-        this._manager.$http.get(this.config.configpropsUrl).success((configprops) => {
+        return this._manager.$http.get(this.config.configpropsUrl).then((resp) => {
+            var configprops = resp.data;
             this.capabilities = {
                 logfile: isEndpointPresent('logfileMvcEndpoint', configprops),
                 activiti: isEndpointPresent('processEngineEndpoint', configprops),
                 restart: isEndpointPresent('restartEndpoint', configprops),
                 refresh: isEndpointPresent('refreshEndpoint', configprops),
                 pause: isEndpointPresent('pauseEndpoint', configprops),
-                resume: isEndpointPresent('resumeEndpoint', configprops)
+                resume: isEndpointPresent('resumeEndpoint', configprops),
+                cache: false
             };
+            return this.getMappings();
+        }).then((mappings) => {
+            this.capabilities.cache = _.keys(mappings).filter((key) => key.indexOf('/admin/cache') !== -1).length > 0;
         });
     }
 
@@ -99,6 +104,15 @@ class Application {
 
     refresh() {
         return this._manager.$http.post(this.config.refreshUrl).then(res => res.data);
+    }
+
+    getMappings() {
+        return this._manager.$http.get(this.config.mappingsUrl).then(res => res.data);
+    }
+
+    evictCache(key) {
+        var opts = key ? {params: {key: key}} : undefined;
+        return this._manager.$http['delete'](this.config.cacheUrl, opts).then(res => res.data);
     }
 
     init(config) {
@@ -157,7 +171,9 @@ class ApplicationManager {
             { name: 'dump', key: 'dumpUrl' },
             { name: 'trace', key: 'traceUrl' },
             { name: 'activiti', key: 'activitiUrl' },
-            { name: 'logfile', key: 'logfileUrl'}
+            { name: 'logfile', key: 'logfileUrl'},
+            { name: 'mappings', key: 'mappingsUrl'},
+            { name: 'admin/cache', key: 'cacheUrl'}
         ];
 
         this.restore();
