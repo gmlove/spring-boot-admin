@@ -94,7 +94,7 @@ class Application {
     }
 
     setEnv(map) {
-        var data = _.pairs(map).map(pair => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1])).join('&');
+        var data = _.toPairs(map).map(pair => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1])).join('&');
         return this._manager.proxy('POST', this.config.envUrl, {}, data);
     }
 
