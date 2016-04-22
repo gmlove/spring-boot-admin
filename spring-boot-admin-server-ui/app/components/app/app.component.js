@@ -22,5 +22,5 @@ class AppController {
 export default {
     controller: AppController,
     controllerAs: 'app',
-    templateUrl: '/components/app/app.component.html'
+    templateUrl: 'components/app/app.component.html'
 }

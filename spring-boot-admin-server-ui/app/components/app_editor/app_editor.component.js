@@ -75,7 +75,7 @@ class AppEditorController {
 export default {
     controller: AppEditorController,
     controllerAs: 'editor',
-    templateUrl: '/components/app_editor/app_editor.component.html',
+    templateUrl: 'components/app_editor/app_editor.component.html',
     bindings: {
         role: '@',
         id: '@'

@@ -135,5 +135,5 @@ class AppListController {
 export default {
     controller: AppListController,
     controllerAs: 'list',
-    templateUrl: '/components/app_list/app_list.component.html'
+    templateUrl: 'components/app_list/app_list.component.html'
 }

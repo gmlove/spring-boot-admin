@@ -158,7 +158,7 @@ class ApplicationManager {
         this.dataStorage = dataStorage;
         this.ApplicationLogging = ApplicationLogging;
 
-        this.proxyEndpoint = "/proxy/";
+        this.proxyEndpoint = "proxy/";
 
         this.applications = new Map();
 
