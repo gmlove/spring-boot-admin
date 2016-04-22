@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+debug: true
+
+logging:
+  file: target/spring-boot-admin-server-simple.log
+
+spring:
+  jackson:
+    serialization:
+     indent-output: true

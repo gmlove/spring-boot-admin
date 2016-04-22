@@ -26,10 +26,9 @@
         <build-plugin.git-commit-id.version>2.2.0</build-plugin.git-commit-id.version>
     </properties>
     <modules>
-        <module>spring-boot-admin-server</module>
+        <module>spring-boot-admin-server-simple</module>
         <module>spring-boot-admin-server-ui</module>
         <module>spring-boot-admin-samples</module>
-        <module>spring-boot-admin-starter-client</module>
         <module>spring-boot-admin-docs</module>
     </modules>
     <organization>
