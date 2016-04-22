@@ -17,9 +17,7 @@
 package de.codecentric.boot.admin.server.simple;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -45,10 +44,14 @@ public class ProxyController {
     {
         String url = request.getHeader("forward-url");
         System.out.println("forward url: " + url);
+        HttpHeaders headers = new HttpHeaders();
+        if (url.endsWith("/env") && method.equals(HttpMethod.POST)) {
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        }
         URI uri = new URI(StringUtils.isEmpty(request.getQueryString()) ? url : url + "?" + request.getQueryString());
 
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(uri, method, new HttpEntity<String>(body), String.class);
+                restTemplate.exchange(uri, method, new HttpEntity<String>(body, headers), String.class);
 
         return responseEntity.getBody();
     }
