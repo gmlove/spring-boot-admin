@@ -37,8 +37,7 @@ class Application {
     getCapabilities() {
         if(!this.config.managementUrl) { return null; }
 
-        return this._manager.$http.get(this.config.configpropsUrl).then((resp) => {
-            var configprops = resp.data;
+        return this._manager.proxy('GET', this.config.configpropsUrl).then((configprops) => {
             this.capabilities = {
                 logfile: isEndpointPresent('logfileMvcEndpoint', configprops),
                 activiti: isEndpointPresent('processEngineEndpoint', configprops),
@@ -63,27 +62,27 @@ class Application {
     }
 
     getHealth() {
-        return this._manager.$http.get(this.config.healthUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.healthUrl);
     }
 
     getInfo() {
-        return this._manager.$http.get(this.config.infoUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.infoUrl);
     }
 
     getMetrics() {
-        return this._manager.$http.get(this.config.metricsUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.metricsUrl);
     }
 
     getThreadDump() {
-        return this._manager.$http.get(this.config.dumpUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.dumpUrl);
     }
 
     getTraces() {
-        return this._manager.$http.get(this.config.traceUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.traceUrl);
     }
 
     getActiviti() {
-        return this._manager.$http.get(this.config.activitiUrl.then(res => res.data));
+        return this._manager.proxy('GET', this.config.activitiUrl);
     }
 
     getLogging() {
@@ -91,28 +90,28 @@ class Application {
     }
 
     getEnv(key) {
-        return this._manager.$http.get(this.config.envUrl + (key ? '/' + key : '' )).then(res => res.data);
+        return this._manager.proxy('GET', this.config.envUrl + (key ? '/' + key : '' ));
     }
 
     setEnv(map) {
-        return this._manager.$http.post(this.config.envUrl, '', {params: map}).then(res => res.data);
+        return this._manager.proxy('POST', this.config.envUrl, {}, map);
     }
 
     resetEnv() {
-        return this._manager.$http.post(this.config.envResetUrl).then(res => res.data);
+        return this._manager.proxy('POST', this.config.envResetUrl);
     }
 
     refresh() {
-        return this._manager.$http.post(this.config.refreshUrl).then(res => res.data);
+        return this._manager.proxy('POST', this.config.refreshUrl);
     }
 
     getMappings() {
-        return this._manager.$http.get(this.config.mappingsUrl).then(res => res.data);
+        return this._manager.proxy('GET', this.config.mappingsUrl);
     }
 
     evictCache(key) {
-        var opts = key ? {params: {key: key}} : undefined;
-        return this._manager.$http['delete'](this.config.cacheUrl, opts).then(res => res.data);
+        var params = key ? {key: key} : undefined;
+        return this._manager.proxy('DELETE', this.config.cacheUrl, params);
     }
 
     init(config) {
@@ -157,6 +156,8 @@ class ApplicationManager {
         this.$window = $window;
         this.dataStorage = dataStorage;
         this.ApplicationLogging = ApplicationLogging;
+
+        this.proxyEndpoint = "/proxy/";
 
         this.applications = new Map();
 
@@ -234,6 +235,12 @@ class ApplicationManager {
         }
 
         return true;
+    }
+
+    proxy(method, url, params, data, headers) {
+        headers = headers || {};
+        headers['forward-url'] = url;
+        return this.$http({url: this.proxyEndpoint, method: method, params: params, data: data, headers: headers}).then(res => res.data);
     }
 }
 

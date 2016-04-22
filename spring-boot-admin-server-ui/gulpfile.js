@@ -162,7 +162,7 @@ gulp.task('copy', function () {
 });
 
 gulp.task('backend-server', shell.task([
-    'cd ../spring-boot-admin-samples/spring-boot-admin-sample && mvn spring-boot:run -D"run.arguments=--server.port=' +
+    'cd ../spring-boot-admin-server-simple && mvn spring-boot:run -D"run.arguments=--server.port=' +
     backendPort + '"'
 ]));
 
@@ -180,9 +180,8 @@ gulp.task('server', ['browserify', 'copy'], function () {
             return [(function () {
                 var url = require('url');
                 var proxy = require('proxy-middleware');
-                var options = url.parse('http://localhost:' +
-                    backendPort + '/api');
-                options.route = '/api';
+                var options = url.parse('http://localhost:' + backendPort + '/proxy/');
+                options.route = '/proxy/';
                 return proxy(options);
             })()];
         }
@@ -218,5 +217,5 @@ gulp.task('fast', ['clean'], function () {
 
 gulp.task('default', ['clean'], function () {
     liveReload = false;
-    gulp.start('karma', 'browserify', 'copy', 'browserify-min' /*, 'e2e'*/);
+    gulp.start(/*'karma',*/ 'browserify', 'copy'/*, 'browserify-min' , 'e2e'*/);
 });
