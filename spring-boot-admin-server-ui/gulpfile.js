@@ -17,7 +17,7 @@ var browserify = require('browserify'),
     babel = require('gulp-babel'),
     argv = require('yargs').argv;
 
-var backendPort = 8080,
+var backendPort = 8082,
     serverPort = 9000,
     liveReload = true,
     targetDir = './target';
