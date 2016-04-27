@@ -180,7 +180,7 @@ gulp.task('server', ['browserify', 'copy'], function () {
             return [(function () {
                 var url = require('url');
                 var proxy = require('proxy-middleware');
-                var options = url.parse('http://localhost:' + backendPort + '/proxy/');
+                var options = url.parse('http://localhost:' + backendPort + '/admin/proxy/');
                 options.route = '/proxy/';
                 return proxy(options);
             })()];

@@ -37,7 +37,7 @@ class Application {
     getCapabilities() {
         if(!this.config.managementUrl) { return null; }
 
-        return this._manager.proxy('GET', this.config.configpropsUrl).then((configprops) => {
+        return this._manager.proxy(this.id, 'GET', this.config.configpropsUrl).then((configprops) => {
             this.capabilities = {
                 logfile: isEndpointPresent('logfileMvcEndpoint', configprops),
                 activiti: isEndpointPresent('processEngineEndpoint', configprops),
@@ -62,27 +62,27 @@ class Application {
     }
 
     getHealth() {
-        return this._manager.proxy('GET', this.config.healthUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.healthUrl);
     }
 
     getInfo() {
-        return this._manager.proxy('GET', this.config.infoUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.infoUrl);
     }
 
     getMetrics() {
-        return this._manager.proxy('GET', this.config.metricsUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.metricsUrl);
     }
 
     getThreadDump() {
-        return this._manager.proxy('GET', this.config.dumpUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.dumpUrl);
     }
 
     getTraces() {
-        return this._manager.proxy('GET', this.config.traceUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.traceUrl);
     }
 
     getActiviti() {
-        return this._manager.proxy('GET', this.config.activitiUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.activitiUrl);
     }
 
     getLogging() {
@@ -90,29 +90,29 @@ class Application {
     }
 
     getEnv(key) {
-        return this._manager.proxy('GET', this.config.envUrl + (key ? '/' + key : '' ));
+        return this._manager.proxy(this.id, 'GET', this.config.envUrl + (key ? '/' + key : '' ));
     }
 
     setEnv(map) {
         var data = _.toPairs(map).map(pair => encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1])).join('&');
-        return this._manager.proxy('POST', this.config.envUrl, {}, data);
+        return this._manager.proxy(this.id, 'POST', this.config.envUrl, {}, data);
     }
 
     resetEnv() {
-        return this._manager.proxy('POST', this.config.envResetUrl);
+        return this._manager.proxy(this.id, 'POST', this.config.envResetUrl);
     }
 
     refresh() {
-        return this._manager.proxy('POST', this.config.refreshUrl);
+        return this._manager.proxy(this.id, 'POST', this.config.refreshUrl);
     }
 
     getMappings() {
-        return this._manager.proxy('GET', this.config.mappingsUrl);
+        return this._manager.proxy(this.id, 'GET', this.config.mappingsUrl);
     }
 
     evictCache(key) {
         var params = key ? {key: key} : undefined;
-        return this._manager.proxy('DELETE', this.config.cacheUrl, params);
+        return this._manager.proxy(this.id, 'DELETE', this.config.cacheUrl, params);
     }
 
     init(config) {
@@ -238,10 +238,11 @@ class ApplicationManager {
         return true;
     }
 
-    proxy(method, url, params, data, headers) {
+    proxy(appName, method, url, params, data, headers) {
         headers = headers || {};
         headers['forward-url'] = url;
-        return this.$http({url: this.proxyEndpoint, method: method, params: params, data: data, headers: headers}).then(res => res.data);
+        var proxyUrl = this.proxyEndpoint + appName +'_' + url.replace(/https?:\/\/[^\/]*\//, '').replace(/\//g, '_');
+        return this.$http({url: proxyUrl, method: method, params: params, data: data, headers: headers}).then(res => res.data);
     }
 }
 

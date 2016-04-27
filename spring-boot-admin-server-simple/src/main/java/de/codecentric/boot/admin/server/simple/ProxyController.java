@@ -25,10 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +41,10 @@ public class ProxyController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/proxy/")
+    @RequestMapping("/proxy/{desc}")
     @ResponseBody
     public String mirrorRest(@RequestBody(required = false) String body,
+                             @PathVariable String desc,
                              HttpMethod method, HttpServletRequest request,
                              HttpServletResponse response) throws URISyntaxException
     {
